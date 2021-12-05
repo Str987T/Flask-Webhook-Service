@@ -7,7 +7,7 @@ import requests
 import mysql.connector
 app = Flask(__name__)
 
-@app.route("/mfjrnwufk9374GHy", methods=['POST'])
+@app.route("/webhook", methods=['POST'])
 def webhook():
 
             #Sorting out the relevant info from the dump into variables
@@ -20,16 +20,16 @@ def webhook():
              date = request.json['transaction']['Date']
 
              connection = mysql.connector.connect(
-               user="csthybvwhm",
-               password="fRynkD6Wp5",
-               host="127.0.0.1",
-               database="csthybvwhm",
-               port="3306"
+               user="database-user",
+               password="database-pass",
+               host="127.0.0.1", #Localhost/IPv4 for remote Database
+               database="database-name",
+               port="database-port"
 
              )
 
              cursor = connection.cursor()
-             add_user = """INSERT INTO csthybvwhm.transaction
+             add_user = """INSERT INTO database.table_name
              (customer_name, customer_id, cashier_name, payment_id, counter_number, total, date)
              VALUES (%s,%s,%s,%s,%s,%s,%s)"""
              data_user = (customer_name, customer_id, cashier_name, payment_id, counter_number, total, date)
