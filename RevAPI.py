@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#changesperformed1
+
 from flask import Flask, json, request, abort
 from waitress import serve
 import datetime
@@ -51,7 +51,7 @@ def webhook():
 
              #The Slack Webhook URL on which all our data is to be sent
              #Test webhook
-             webhook_url = 'Slack-WEBHOOK-URL'
+             webhook_url = 'WEBHOOK-URL-send-processed-data-to-any-webhook-service'
 
              #Preparing for sending data. Headers and body components initialized
              headers = {'Content-type': 'application/json'}
