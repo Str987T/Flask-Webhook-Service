@@ -49,8 +49,7 @@ def webhook():
              _message += "\nDate: *{}*"
              _message += "\n============================"
 
-             #The Slack Webhook URL on which all our data is to be sent
-             #Test webhook
+             #The Webhook URL on which all our data is to be sent
              webhook_url = 'WEBHOOK-URL-send-processed-data-to-any-webhook-service'
 
              #Preparing for sending data. Headers and body components initialized
@@ -71,7 +70,7 @@ def webhook():
                         'text': message
                     }
 
-             #Sending data on Slack now
+             #Sending data
              response = requests.post(webhook_url, data=json.dumps(body), headers=headers)
 
              return 'success', 200
