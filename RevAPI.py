@@ -7,10 +7,11 @@ import requests
 import mysql.connector
 app = Flask(__name__)
 
+#app-route to receive JSON POST from external service
 @app.route("/webhook", methods=['POST'])
 def webhook():
 
-            #Sorting out the relevant info from the dump into variables
+             #collecting required data          
              customer_name = request.json['transaction']['Customer Name']
              customer_id = request.json['transaction']['Customer ID']
              cashier_name = request.json['transaction']['Cashier Name']
@@ -19,6 +20,7 @@ def webhook():
              total = request.json['transaction']['Total']
              date = request.json['transaction']['Date']
 
+             #database connection details
              connection = mysql.connector.connect(
                user="database-user",
                password="database-pass",
@@ -27,7 +29,8 @@ def webhook():
                port="database-port"
 
              )
-
+             
+             #writing to database 
              cursor = connection.cursor()
              add_user = """INSERT INTO database.table_name
              (customer_name, customer_id, cashier_name, payment_id, counter_number, total, date)
@@ -38,7 +41,7 @@ def webhook():
              cursor.close()
              connection.close()
 
-             #Format
+             #Setting a format for slack message
              _message = "============================\n"
              _message += "\nCustomer Name: *{}*"
              _message += "\nCustomer ID: *{}*"
@@ -49,10 +52,10 @@ def webhook():
              _message += "\nDate: *{}*"
              _message += "\n============================"
 
-             #The Webhook URL on which all our data is to be sent
+             #The Webhook URL on which our formatted data will sent as POST
              webhook_url = 'WEBHOOK-URL-send-processed-data-to-any-webhook-service'
 
-             #Preparing for sending data. Headers and body components initialized
+             #Preparing to send data. Headers and body components initialized
              headers = {'Content-type': 'application/json'}
              message = _message.format(
                         customer_name,
@@ -63,8 +66,7 @@ def webhook():
                         total,
                         date
                     )
-
-             #The message will be jsonified here
+            
              body = {
                         'username': 'Transaction Details',
                         'text': message
@@ -75,6 +77,7 @@ def webhook():
 
              return 'success', 200
 
+#another route to check for service availability
 @app.route("/perform-test", methods=['GET'])
 def test():
     return 'Service Active!', 200
