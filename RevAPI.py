@@ -22,7 +22,7 @@ def webhook():
              connection = mysql.connector.connect(
                user="database-user",
                password="database-pass",
-               host="127.0.0.1", #Localhost/IPv4 for remote Database
+               host="127.0.0.1", #Database Host
                database="database-name",
                port="database-port"
 
